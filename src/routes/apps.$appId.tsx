@@ -131,7 +131,7 @@ function AppDetailPage() {
         <div className="glass rounded-2xl p-5 shadow-card">
           <h2 className="text-lg font-bold mb-3">سجل التحديثات</h2>
           <ul className="space-y-2 text-sm">
-            {app.changelog.map((c) => (
+            {app.changelog.map((c: string) => (
               <li key={c} className="flex items-start gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-primary mt-2 shrink-0" />
                 <span className="text-muted-foreground">{c}</span>
@@ -142,7 +142,7 @@ function AppDetailPage() {
         <div className="glass rounded-2xl p-5 shadow-card">
           <h2 className="text-lg font-bold mb-3">المميزات</h2>
           <ul className="space-y-2 text-sm">
-            {app.features.map((f) => (
+            {app.features.map((f: string) => (
               <li key={f} className="flex items-center gap-2">
                 <span
                   className="h-5 w-5 rounded-full grid place-items-center text-xs"
@@ -179,7 +179,7 @@ function InfoTile({
   label,
   value,
 }: {
-  icon: React.ComponentType<{ className?: string }>;
+  icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
   label: string;
   value: string;
 }) {

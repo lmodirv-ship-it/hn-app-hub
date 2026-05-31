@@ -54,7 +54,7 @@ function Feature({
   sub,
   tint,
 }: {
-  icon: React.ComponentType<{ className?: string }>;
+  icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
   label: string;
   sub: string;
   tint: "success" | "warning" | "info";

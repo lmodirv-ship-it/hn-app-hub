@@ -9,38 +9,146 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UpdatesRouteImport } from './routes/updates'
+import { Route as SupportRouteImport } from './routes/support'
+import { Route as CategoriesRouteImport } from './routes/categories'
+import { Route as AppsRouteImport } from './routes/apps'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CategoriesCatIdRouteImport } from './routes/categories.$catId'
+import { Route as AppsAppIdRouteImport } from './routes/apps.$appId'
 
+const UpdatesRoute = UpdatesRouteImport.update({
+  id: '/updates',
+  path: '/updates',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SupportRoute = SupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CategoriesRoute = CategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppsRoute = AppsRouteImport.update({
+  id: '/apps',
+  path: '/apps',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CategoriesCatIdRoute = CategoriesCatIdRouteImport.update({
+  id: '/$catId',
+  path: '/$catId',
+  getParentRoute: () => CategoriesRoute,
+} as any)
+const AppsAppIdRoute = AppsAppIdRouteImport.update({
+  id: '/$appId',
+  path: '/$appId',
+  getParentRoute: () => AppsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/apps': typeof AppsRouteWithChildren
+  '/categories': typeof CategoriesRouteWithChildren
+  '/support': typeof SupportRoute
+  '/updates': typeof UpdatesRoute
+  '/apps/$appId': typeof AppsAppIdRoute
+  '/categories/$catId': typeof CategoriesCatIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/apps': typeof AppsRouteWithChildren
+  '/categories': typeof CategoriesRouteWithChildren
+  '/support': typeof SupportRoute
+  '/updates': typeof UpdatesRoute
+  '/apps/$appId': typeof AppsAppIdRoute
+  '/categories/$catId': typeof CategoriesCatIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/apps': typeof AppsRouteWithChildren
+  '/categories': typeof CategoriesRouteWithChildren
+  '/support': typeof SupportRoute
+  '/updates': typeof UpdatesRoute
+  '/apps/$appId': typeof AppsAppIdRoute
+  '/categories/$catId': typeof CategoriesCatIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/apps'
+    | '/categories'
+    | '/support'
+    | '/updates'
+    | '/apps/$appId'
+    | '/categories/$catId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/apps'
+    | '/categories'
+    | '/support'
+    | '/updates'
+    | '/apps/$appId'
+    | '/categories/$catId'
+  id:
+    | '__root__'
+    | '/'
+    | '/apps'
+    | '/categories'
+    | '/support'
+    | '/updates'
+    | '/apps/$appId'
+    | '/categories/$catId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppsRoute: typeof AppsRouteWithChildren
+  CategoriesRoute: typeof CategoriesRouteWithChildren
+  SupportRoute: typeof SupportRoute
+  UpdatesRoute: typeof UpdatesRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/updates': {
+      id: '/updates'
+      path: '/updates'
+      fullPath: '/updates'
+      preLoaderRoute: typeof UpdatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/support': {
+      id: '/support'
+      path: '/support'
+      fullPath: '/support'
+      preLoaderRoute: typeof SupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/categories': {
+      id: '/categories'
+      path: '/categories'
+      fullPath: '/categories'
+      preLoaderRoute: typeof CategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apps': {
+      id: '/apps'
+      path: '/apps'
+      fullPath: '/apps'
+      preLoaderRoute: typeof AppsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +156,52 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/categories/$catId': {
+      id: '/categories/$catId'
+      path: '/$catId'
+      fullPath: '/categories/$catId'
+      preLoaderRoute: typeof CategoriesCatIdRouteImport
+      parentRoute: typeof CategoriesRoute
+    }
+    '/apps/$appId': {
+      id: '/apps/$appId'
+      path: '/$appId'
+      fullPath: '/apps/$appId'
+      preLoaderRoute: typeof AppsAppIdRouteImport
+      parentRoute: typeof AppsRoute
+    }
   }
 }
 
+interface AppsRouteChildren {
+  AppsAppIdRoute: typeof AppsAppIdRoute
+}
+
+const AppsRouteChildren: AppsRouteChildren = {
+  AppsAppIdRoute: AppsAppIdRoute,
+}
+
+const AppsRouteWithChildren = AppsRoute._addFileChildren(AppsRouteChildren)
+
+interface CategoriesRouteChildren {
+  CategoriesCatIdRoute: typeof CategoriesCatIdRoute
+}
+
+const CategoriesRouteChildren: CategoriesRouteChildren = {
+  CategoriesCatIdRoute: CategoriesCatIdRoute,
+}
+
+const CategoriesRouteWithChildren = CategoriesRoute._addFileChildren(
+  CategoriesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppsRoute: AppsRouteWithChildren,
+  CategoriesRoute: CategoriesRouteWithChildren,
+  SupportRoute: SupportRoute,
+  UpdatesRoute: UpdatesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
